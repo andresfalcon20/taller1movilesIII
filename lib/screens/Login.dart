@@ -1,61 +1,65 @@
+import 'package:app_taller/main.dart';
+import 'package:app_taller/screens/Catalogo.dart';
 import 'package:flutter/material.dart';
 
 class PantallaLogin extends StatelessWidget {
-  const PantallaLogin({super.key});
+  // Controladores para leer lo que escribes
+  final TextEditingController correoCtrl = TextEditingController();
+  final TextEditingController passCtrl = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Ingresar a tu cuenta")),
-      body: formularioLogin(), // Llamada a la función widget
+      appBar: AppBar(title: Text("INGRESA A TU CUENTA")),
+      body: formularioLogin(context, correoCtrl, passCtrl), 
     );
   }
 }
 
-Widget formularioLogin() {
+Widget formularioLogin(context, correoCtrl, passCtrl) {
   return Container(
     padding: EdgeInsets.all(30),
     decoration: BoxDecoration(
       gradient: LinearGradient(
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
-        colors: [Colors.white, Colors.indigo.shade50]
-      )
+        colors: [Colors.white, Colors.indigo.shade50],
+      ),
     ),
     child: Column(
       children: [
-        Text("¡Hola de nuevo!", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+        Text("INICIA SESIÓN", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
         SizedBox(height: 30),
-
-        // Campo Correo
         TextField(
-          decoration: InputDecoration(
-            labelText: "Correo Electrónico",
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-            prefixIcon: Icon(Icons.email_outlined),
-            filled: true,
-            fillColor: Colors.white
-          ),
+          controller: correoCtrl,
+          decoration: InputDecoration(labelText: "Correo Electrónico", prefixIcon: Icon(Icons.email_outlined), fillColor: Colors.white, filled: true),
         ),
         SizedBox(height: 20),
-
         TextField(
-          obscureText: true, // Propiedad para ocultar texto
-          decoration: InputDecoration(
-            labelText: "Contraseña",
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-            prefixIcon: Icon(Icons.lock_outline),
-            filled: true,
-            fillColor: Colors.white
-          ),
+          controller: passCtrl,
+          obscureText: true,
+          decoration: InputDecoration(labelText: "Contraseña", prefixIcon: Icon(Icons.lock_outline), fillColor: Colors.white, filled: true),
         ),
         SizedBox(height: 30),
-
         FilledButton(
-          onPressed: () {}, 
+          onPressed: () {
+            // LÓGICA DE LOGIN
+            bool encontrado = false;
+            for (var u in usuariosRegistrados) {
+              if (u['email'] == correoCtrl.text && u['pass'] == passCtrl.text) {
+                encontrado = true;
+              }
+            }
+
+            if (encontrado) {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => PantallaCatalogo()));
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Usuario no encontrado")));
+            }
+          },
           style: FilledButton.styleFrom(backgroundColor: Colors.indigo),
-          child: Text("ENTRAR")
-        )
+          child: Text("ENTRAR"),
+        ),
       ],
     ),
   );
