@@ -1,32 +1,35 @@
-import 'package:app_taller/screens/Login.dart';
-import 'package:app_taller/screens/Registro.dart';
 import 'package:flutter/material.dart';
+import 'screens/Login.dart';
+import 'screens/Registro.dart';
 
-// --- BASE DE DATOS LOCAL (Global) ---
+// --- LÓGICA GLOBAL (Base de datos local) ---
 List<Map<String, String>> usuariosRegistrados = [
-  {"email": "admin@gmail.com", "pass": "123", "nombre": "Admin"}
+  {"email": "admin@gmail.com", "pass": "123", "nombre": "Admin"},
 ];
 
 List<Map<String, String>> basePeliculasAccion = [
   {
     "titulo": "John Wick 4",
     "desc": "El legendario asesino busca su libertad.",
-    "img": "https://m.media-amazon.com/images/I/81FK6-fM63L._AC_UF894,1000_QL80_.jpg"
+    "img":
+        "https://m.media-amazon.com/images/I/81FK6-fM63L._AC_UF894,1000_QL80_.jpg",
   },
   {
     "titulo": "Misión Imposible",
     "desc": "Ethan Hunt en una carrera contra el tiempo.",
-    "img": "https://m.media-amazon.com/images/I/71YI-DkOqCL._AC_UF894,1000_QL80_.jpg"
+    "img":
+        "https://m.media-amazon.com/images/I/71YI-DkOqCL._AC_UF894,1000_QL80_.jpg",
   },
   {
     "titulo": "Top Gun: Maverick",
     "desc": "Acción extrema en aviones de combate.",
-    "img": "https://m.media-amazon.com/images/I/719f6Xv69XL._AC_UF894,1000_QL80_.jpg"
+    "img":
+        "https://m.media-amazon.com/images/I/719f6Xv69XL._AC_UF894,1000_QL80_.jpg",
   },
 ];
 
 void main() {
-  runApp(AplicacionTaller1());
+  runApp(const AplicacionTaller1());
 }
 
 class AplicacionTaller1 extends StatelessWidget {
@@ -36,7 +39,23 @@ class AplicacionTaller1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: PantallaBienvenida(),
+      title: 'AJC MOVIES',
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: const Color(0xFF0F0F0F),
+        primaryColor: Colors.redAccent,
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.redAccent,
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            padding: const EdgeInsets.symmetric(vertical: 15),
+          ),
+        ),
+      ),
+      home: const PantallaBienvenida(),
     );
   }
 }
@@ -47,39 +66,85 @@ class PantallaBienvenida extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Bienvenido "),
-        backgroundColor: Colors.indigo,
-        foregroundColor: Colors.white,
-      ),
-      body: Center(
+      body: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(horizontal: 30),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Tu imagen original
-            Image.asset("assets/img/imagen.png", width: 500),
-
-            Text(
-              "Bienvenid@ a la mejor aplicacion de peliculas populares, en tendencia y nuevas por llegar",
+            Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.redAccent.withOpacity(0.2),
+                    blurRadius: 20,
+                    spreadRadius: 5,
+                  ),
+                ],
+              ),
+              child: ClipOval(
+                child: Image.asset(
+                  "assets/img/image.png",
+                  width: 180,
+                  height: 180,
+                  fit: BoxFit.cover,
+                  errorBuilder: (c, e, s) => const Icon(
+                    Icons.movie_filter,
+                    size: 100,
+                    color: Colors.redAccent,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 40),
+            const Text(
+              "ActionFlix",
+              style: TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+                color: Colors.redAccent,
+              ),
+            ),
+            const SizedBox(height: 15),
+            const Text(
+              "Tu destino para el mejor cine de acción y estrenos exclusivos.",
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 16, color: Colors.grey),
+              style: TextStyle(fontSize: 16, color: Colors.white70),
             ),
-
-            SizedBox(height: 30),
-
-            FilledButton(
-              onPressed: () => irAlLogin(context),
-              style: FilledButton.styleFrom(backgroundColor: Colors.indigo),
-              child: Text("INICIAR SESIÓN", style: TextStyle(fontSize: 16)),
+            const SizedBox(height: 60),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PantallaLogin()),
+                ),
+                child: const Text(
+                  "INICIAR SESIÓN",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
             ),
-
-            SizedBox(height: 15),
-            OutlinedButton(
-              onPressed: () => irAlRegistro(context),
-              style: OutlinedButton.styleFrom(foregroundColor: Colors.indigo),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
-                child: Text("REGISTRARSE", style: TextStyle(fontSize: 16)),
+            const SizedBox(height: 15),
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton(
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PantallaRegistro()),
+                ),
+                style: OutlinedButton.styleFrom(
+                  side: const BorderSide(color: Colors.white54),
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: const Text(
+                  "REGISTRARSE",
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
             ),
           ],
@@ -87,12 +152,4 @@ class PantallaBienvenida extends StatelessWidget {
       ),
     );
   }
-}
-
-void irAlLogin(context) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => PantallaLogin()));
-}
-
-void irAlRegistro(context) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => PantallaRegistro()));
 }
